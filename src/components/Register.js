@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import * as auth from "../utils/auth.js";
 import "../blocks/register.css";
-import InfoToolTips from "./InfoToolTips.js";
+import InfotoolTip from "./InfotoolTip.js";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ export default function Register() {
 
   const [open, setOpen] = useState(false);
   const [isSuccess, setIsSuccess] = useState(true);
-  const history = userHistory();
+  const history = useHistory();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -75,7 +75,7 @@ export default function Register() {
           </Link>
         </div>
       </div>
-      <InfoToolTips
+      <InfotoolTip
         open={open}
         isSuccess={isSuccess}
         handleClose={() => {

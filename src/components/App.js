@@ -9,6 +9,11 @@ import EditAvatar from "./EditAvatar";
 import EditProfile from "./EditProfile";
 import AddPlacePopUp from "./AddPlacePopUp";
 import UserContext from "./UserContext";
+import { Route, Switch, Redirect, useHistory } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+import Login from "../components/Login";
+import Register from "../components/Register";
+import * as auth from "../utils/auth.js";
 
 function App() {
   const [isPopupProfileOpen, setPopupProfileOpen] = React.useState(false);
@@ -20,6 +25,11 @@ function App() {
 
   const [currentUser, setCurrentUser] = React.useState({});
   const [cards, setCards] = React.useState([]);
+
+  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+
+  const history = useHistory();
 
   const closeAllPopups = () => {
     setPopupProfileOpen(false);
@@ -113,59 +123,117 @@ function App() {
   };
 
   React.useEffect(() => {
-    api.getUserInfo().then((user) => {
-      setCurrentUser(user);
-      api.getCards().then((cardsData) => {
-        setCards(cardsData);
+    if (isLoggedIn) {
+      api.getUserInfo().then((user) => {
+        setCurrentUser(user);
+        api.getCards().then((cardsData) => {
+          setCards(cardsData);
+        });
       });
-    });
+    }
+  }, [isLoggedIn]);
+
+  React.useEffect(() => {
+    tokenCheck();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setCurrentUser({});
+    setIsLoggedIn(false);
+    history.push("/login");
+  };
+
+  const tokenCheck = () => {
+    const jwt = localStorage.getItem("jwt");
+
+    if (jwt) {
+      auth
+        .checkToken(jwt)
+        .then((res) => {
+          if (res) {
+            setIsLoggedIn(true);
+            history.push("/home");
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+
+    return;
+  };
+
+  const handleLogin = (evt) => {
+    evt.preventDefault();
+    tokenCheck();
+  };
+
   return (
-    <div className="page">
-      <UserContext.Provider value={currentUser}>
-        <Header />
-        <Main
-          handleEditAvatar={handleEditAvatar}
-          handleEditProfile={handleEditProfile}
-          handleAddPlace={handleAddPlace}
-          handleDeleteCard={handleDeleteCard}
-          handleCardClick={handleCardClick}
-          handleCardLike={handleCardLike}
-          cards={cards}
+    <UserContext.Provider value={currentUser}>
+      <div className="page">
+        <Header
+          isLoggedIn={isLoggedIn}
+          email={email}
+          handleLogout={handleLogout}
         />
-        <Footer />
-        <EditAvatar
-          handleClose={closeAllPopups}
-          open={isPopupEditAvatar}
-          onUpdateAvatar={onSubmitEditAvatar}
-        />
-        <EditProfile
-          handleClose={closeAllPopups}
-          open={isPopupProfileOpen}
-          onUpdateUser={onSubmitEditProfile}
-        />
-        <AddPlacePopUp
-          handleClose={closeAllPopups}
-          open={isPopupAddPlace}
-          onSubmitAddPlace={onSubmitAddPlace}
-        />
-        <PopUpWithForm
-          title="Estas seguro?"
-          handleClose={closeAllPopups}
-          classId={"popup_confirmation"}
-          open={isPopupDeleteCard}
-          onSubmit={onSubmitDeleteCard}
-          buttonTitle="Si"
-        />
-        <ImagePopUp
-          classId={"popup_card"}
-          handleClose={closeAllPopups}
-          selectedCard={selectedCard}
-          open={isPopupImageOpen}
-        />
-      </UserContext.Provider>
-    </div>
+        <Switch>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/login">
+            <Login
+              setIsLoggedIn={setIsLoggedIn}
+              handleLogin={handleLogin}
+              email={email}
+              setEmail={setEmail}
+            />
+          </Route>
+          <ProtectedRoute path="/home" isLoggedIn={isLoggedIn}>
+            <Main
+              handleEditAvatar={handleEditAvatar}
+              handleEditProfile={handleEditProfile}
+              handleAddPlace={handleAddPlace}
+              handleDeleteCard={handleDeleteCard}
+              handleCardClick={handleCardClick}
+              handleCardLike={handleCardLike}
+              cards={cards}
+            />
+            <Footer />
+            <EditAvatar
+              handleClose={closeAllPopups}
+              open={isPopupEditAvatar}
+              onUpdateAvatar={onSubmitEditAvatar}
+            />
+            <EditProfile
+              handleClose={closeAllPopups}
+              open={isPopupProfileOpen}
+              onUpdateUser={onSubmitEditProfile}
+            />
+            <AddPlacePopUp
+              handleClose={closeAllPopups}
+              open={isPopupAddPlace}
+              onSubmitAddPlace={onSubmitAddPlace}
+            />
+            <PopUpWithForm
+              title="Estas seguro?"
+              handleClose={closeAllPopups}
+              classId={"popup_confirmation"}
+              open={isPopupDeleteCard}
+              onSubmit={onSubmitDeleteCard}
+              buttonTitle="Si"
+            />
+            <ImagePopUp
+              classId={"popup_card"}
+              handleClose={closeAllPopups}
+              selectedCard={selectedCard}
+              open={isPopupImageOpen}
+            />
+          </ProtectedRoute>
+          <Route exact path="/">
+            {isLoggedIn ? <Redirect to="/home" /> : <Redirect to="/register" />}
+          </Route>
+        </Switch>
+      </div>
+    </UserContext.Provider>
   );
 }
 

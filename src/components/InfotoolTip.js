@@ -1,11 +1,11 @@
 import React from "react";
-import PopupWithForm from "./PopupWithForm";
+import PopUpWithForm from "./PopUpWithForm";
 import "../blocks/popup.css";
 
 export default function InfotoolTip({ handleClose, open, isSuccess }) {
   return (
     <>
-      <PopupWithForm>
+      <PopUpWithForm>
         <div
           className={
             isSuccess ? "popup__register_alert" : "popup__register_alert_wrong"
@@ -15,7 +15,7 @@ export default function InfotoolTip({ handleClose, open, isSuccess }) {
             ? "¡Correcto! Ya estás registrado."
             : "Uy, algo salió mal. Por favor, inténtalo de nuevo."}
         </div>
-      </PopupWithForm>
+      </PopUpWithForm>
     </>
   );
 }
