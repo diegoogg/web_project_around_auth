@@ -29,7 +29,7 @@ function Main({
         >
           <img
             src={currentUser.profile || profile}
-            alt="profile picture"
+            alt="Jacques Cousteau, explorador"
             className="profile__avatar"
           />
         </button>
