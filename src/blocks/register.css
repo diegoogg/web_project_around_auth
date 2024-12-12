@@ -1,13 +1,10 @@
 .register {
-  font-family: Inter;
-  width: 358px;
+  margin: 60px auto auto;
+  top: 0px;
+  border-radius: 10px;
+  font-family: "Inter", "sans serif";
+  max-width: 358px;
   color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  left: 30%;
 }
 
 .register__welcome {
