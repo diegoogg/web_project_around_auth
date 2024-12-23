@@ -32,7 +32,7 @@ export const login = (email, password) => {
   })
     .then((response) => {
       try {
-        if (response.status === 200) {
+        if (response.status === 200 || response.status < 300) {
           return response.json();
         }
       } catch (e) {

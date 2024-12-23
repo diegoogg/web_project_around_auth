@@ -124,7 +124,7 @@
   text-align: center;
 }
 
-.popup__register_alert-wrong {
+.popup__register_alert_wrong {
   background-image: url("../images/x-red.png");
   background-repeat: no-repeat;
   background-size: auto;
