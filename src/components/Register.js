@@ -19,8 +19,10 @@ export default function Register() {
         .register(email, password)
         .then((res) => {
           console.log(res, res._id);
-          if (!res._id) {
+          if (!res.data._id) {
             setIsSuccess(false);
+          } else {
+            setIsSuccess(true);
           }
           setOpen(true);
           setTimeout(() => {

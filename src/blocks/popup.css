@@ -110,7 +110,7 @@
 }
 
 .popup__register_alert {
-  background-image: url(../images/check.png);
+  background-image: url("../images/check.png");
   background-repeat: no-repeat;
   background-size: auto;
   background-color: transparent;
@@ -125,7 +125,7 @@
 }
 
 .popup__register_alert-wrong {
-  background-image: url(../images/x-red.png);
+  background-image: url("../images/x-red.png");
   background-repeat: no-repeat;
   background-size: auto;
   background-color: transparent;
