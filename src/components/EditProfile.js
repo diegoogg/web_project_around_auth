@@ -40,14 +40,14 @@ export default function EditProfile({ handleClose, open, onUpdateUser }) {
           minLength="2"
           maxLength="40"
           name="name"
-          value={name}
+          defaultValue={name}
         />
-        <span class="popup__error popup__error_type_name"></span>
+        <span className="popup__error popup__error_type_name"></span>
         <input
           type="text"
           placeholder="Acerca de mi"
           className="popup__input popup__input_about"
-          value={description}
+          defaultValue={description}
           onChange={(e) => setDescription(e.target.value)}
           required
           minLength="2"

@@ -8,7 +8,7 @@ function Header({ isLoggedIn, handleLogout }) {
   return (
     <header className="header">
       <img src={logo} alt="logo around the us" className="header__logo" />
-      <p className="header__register">
+      <div className="header__register">
         {!isLoggedIn &&
           (location.pathname === "/login" ? (
             <Link to="register" className="header__register">
@@ -24,7 +24,7 @@ function Header({ isLoggedIn, handleLogout }) {
             Cerrar sesión
           </p>
         )}
-      </p>
+      </div>
 
       <span className="header__divider"></span>
     </header>

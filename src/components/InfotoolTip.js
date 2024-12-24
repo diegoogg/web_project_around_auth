@@ -5,7 +5,12 @@ import "../blocks/popup.css";
 export default function InfotoolTip({ handleClose, open, isSuccess }) {
   return (
     <>
-      <PopUpWithForm handleClose={handleClose} open={open} classId={isSuccess}>
+      <PopUpWithForm
+        handleClose={handleClose}
+        open={open}
+        classId={isSuccess}
+        showSubmitButton={false}
+      >
         <div
           className={
             isSuccess ? "popup__register_alert" : "popup__register_alert_wrong"
